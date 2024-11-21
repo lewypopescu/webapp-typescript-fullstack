@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Home.module.css";
 
+import Modal from "../Modal/Modal";
+
 import logoImg from "../../assets/logo.png";
 import leafImg from "../../assets/leaf.png";
 import strawberryImg from "../../assets/strawberry.png";
@@ -32,6 +34,16 @@ const Home: React.FC = () => {
     formData.currentWeight &&
     formData.age &&
     formData.bloodType;
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -74,6 +86,7 @@ const Home: React.FC = () => {
               placeholder="Write down your height in cm."
               value={formData.height}
               onChange={handleChange}
+              step="10"
             />
           </div>
           <div className={styles.inputGroup}>
@@ -84,6 +97,7 @@ const Home: React.FC = () => {
               placeholder="Your desired weight in kg."
               value={formData.desiredWeight}
               onChange={handleChange}
+              step="10"
             />
           </div>
           <div className={styles.inputGroup}>
@@ -104,6 +118,7 @@ const Home: React.FC = () => {
               placeholder="Write down your weight in kg."
               value={formData.currentWeight}
               onChange={handleChange}
+              step="10"
             />
           </div>
           <div className={styles.inputGroup}>
@@ -128,11 +143,24 @@ const Home: React.FC = () => {
             type="submit"
             className={styles.button}
             disabled={!isFormComplete}
+            onClick={handleOpenModal}
           >
-            {isFormComplete ? "Submit your data" : "Fill in your data"}
+            {isFormComplete ? "Start losing weight" : "Fill in your data"}
           </button>
         </form>
       </main>
+      {showModal && (
+        <Modal
+          onClose={handleCloseModal}
+          calories={2900}
+          restrictedFoods={[
+            "Flour products",
+            "Milk",
+            "Red meat",
+            "Smoked meats",
+          ]}
+        />
+      )}
     </div>
   );
 };
